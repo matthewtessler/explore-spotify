@@ -20,10 +20,10 @@ router.get('/', function(req, res, next) {
   	request.post(authOptions, function(error, response, body) {
   	  if (!error && response.statusCode === 200) {
   	    token = body.access_token;
-  			res.render('index', { title: 'Spotify Audio Features Explorer', token: token});
+  			res.render('index', { title: 'Explore Spotify', token: token});
   	  }
   		else {
-  			res.render('index', {title: 'Spotify Audio Features Explorer', token: "was not found."});
+  			res.render('index', {title: 'Explore Spotify', token: "was not found."});
   		}
   	});
 });
