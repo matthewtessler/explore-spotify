@@ -5,28 +5,92 @@ import Spotify from 'spotify-web-api-js'
 let s = new Spotify();
 s.setAccessToken(token); // setting access token for api calls, brought from server
 
-// test to see if spotify api is working
-s.search("frank ocean", ["track"], function(err,data) {
-  if (err) {
-    console.error(err);
-  }
-  else {
-    // display search results of tracks on console
-    console.log(data);
-  }
-})
-
 class App extends Component {
   render() {
     return (
       <div>
-        <div id="top">
-          <h1>Explore Spotify</h1>
-          <p>
-            <a href="http://matthewtessler.com" target="_blank"> Matthew Tessler 2017</a>
-          </p>
+        <Top />
+        <Results />
+      </div>
+    )
+  }
+}
+
+class Top extends Component {
+  render() {
+    return (
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-lg-6 col-lg-offset-3">
+            <div id="top">
+              <h1>Explore Spotify</h1>
+              <p>
+                <a href="http://matthewtessler.com" target="_blank"> Matthew Tessler 2017</a>
+              </p>
+              <Query />
+            </div>
+          </div>
         </div>
       </div>
+    )
+  }
+}
+
+class Query extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+  }
+
+  handleClick = (e) => {
+    s.search(this.state.value, ["track"], function(err,data) {
+      if (err) {
+        console.error(err);
+      }
+      else {
+        alert("in development: showing raw data for now");
+        const element = (
+          <div>
+            {JSON.stringify(data)}
+          </div>
+        )
+        ReactDOM.render(element, document.querySelector('#results'));
+      }
+    })
+  }
+
+  handleChange = (event) => {
+    this.setState({value: event.target.value});
+  }
+
+  handleEnter = (e) => {
+    if (e.key === 'Enter') {
+      this.handleClick(e);
+    }
+  }
+
+  render() {
+    return (
+      <div className="input-group">
+        <input type="text" className="form-control" value={this.state.value} id="searchBar" onKeyUp={this.handleEnter} onChange={this.handleChange} placeholder="Find your favorite tracks..."/>
+        <span className="input-group-btn">
+          <a className="btn btn-default" type="button" href="https://github.com/matthewtessler/spotify-af-explorer" target="_blank">
+            <i className="fa fa-github fa-lg" aria-hidden="true"></i>
+          </a>
+          <a className="btn btn-default" type="button" href="https://github.com/matthewtessler/spotify-af-explorer" target="_blank">
+            <i className="glyphicon glyphicon-question-sign" aria-hidden="true"></i>
+          </a>
+          <button className="btn btn-default" type="button" id="goBtn" onClick={this.handleClick}>Go!</button>
+        </span>
+      </div>
+    )
+  }
+}
+
+class Results extends Component {
+  render() {
+    return (
+      <div id="results"></div>
     )
   }
 }
