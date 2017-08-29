@@ -26,7 +26,9 @@
     "pug": "~2.0.0-beta11",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "request": "^2.81.0",
     "serve-favicon": "~2.4.2",
+    "spotify-web-api-js": "^0.22.0",
     "webpack": "^3.5.5"
   }
 }

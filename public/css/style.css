@@ -1,8 +1,50 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 15px;
+  background-color: #191414;
+  color: #32CD65;
+  font-family: "Helvetica", "Arial", "sans-serif";
+}
+
+.panel {
+  margin:10px;
+  color:#191414;
+  min-height:85px;
+}
+
+img {
+  width: 50px;
+  height: 50px;
+}
+
+#top {
+  text-align: center;
+}
+
+#key {
+  margin: 10px;
+  text-align: center;
+}
+
+.progress-bar {
+  color: #191414;
+}
+
+h1 {
+  text-align: center;
+}
+
+small {
+  color:#828282;
+}
+
+form {
+  color: #191414;
+}
+
+p {
+  color: #FFFFFF;
 }
 
 a {
-  color: #00B7FF;
+  color: #666666;
 }
