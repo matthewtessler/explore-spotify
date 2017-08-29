@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom'
 import Spotify from 'spotify-web-api-js'
 
 let s = new Spotify();
-s.setAccessToken(token); // setting access token for api calls, brought from server
+s.setAccessToken(token);
 
 class App extends Component {
   render() {
     return (
       <div>
         <Top />
+        <Key />
         <Results />
       </div>
     )
@@ -36,6 +37,20 @@ class Top extends Component {
   }
 }
 
+class Key extends Component {
+  render() {
+    return (
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-lg-12">
+            <p id="key"><span className='glyphicon glyphicon-stop' aria-hidden='true' id="danceability"></span> danceability <span className='glyphicon glyphicon-stop' aria-hidden='true' id="acousticness"></span> acousticness <span className='glyphicon glyphicon-stop' aria-hidden='true' id="energetic"></span> energetic <span className='glyphicon glyphicon-stop' aria-hidden='true' id="instrumental"></span> instrumental <span className='glyphicon glyphicon-stop' aria-hidden='true' id="liveness"></span> liveness <span className='glyphicon glyphicon-stop' aria-hidden='true' id="speechiness"></span> speechiness  </p>
+            </div>
+        </div>
+      </div>
+    )
+  }
+}
+
 class Query extends Component {
   constructor(props) {
     super(props);
@@ -48,13 +63,13 @@ class Query extends Component {
         console.error(err);
       }
       else {
-        alert("in development: showing raw data for now");
         const element = (
-          <div>
+          <div className="container-fluid">
             {JSON.stringify(data)}
           </div>
-        )
+        );
         ReactDOM.render(element, document.querySelector('#results'));
+        alert("in development: showing raw data for now");
       }
     })
   }

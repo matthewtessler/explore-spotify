@@ -25,6 +25,30 @@ img {
   text-align: center;
 }
 
+#danceability {
+  color:#65F35B
+}
+
+#acousticness {
+  color:#4222F2
+}
+
+#energetic {
+  color:#CEF36D
+}
+
+#instrumental {
+  color:#FB483B
+}
+
+#liveness {
+  color:#AC2F95
+}
+
+#speechiness  {
+  color:#F39A35
+}
+
 .progress-bar {
   color: #191414;
 }
