@@ -11,7 +11,7 @@ class App extends Component {
       <div>
         <Top />
         <Key />
-        <Results />
+        <div id="results"></div>
       </div>
     )
   }
@@ -63,13 +63,7 @@ class Query extends Component {
         console.error(err);
       }
       else {
-        const element = (
-          <div className="container-fluid">
-            {JSON.stringify(data)}
-          </div>
-        );
-        ReactDOM.render(element, document.querySelector('#results'));
-        alert("in development: showing raw data for now");
+        ReactDOM.render(<Results data={data}/>, document.querySelector('#results'));
       }
     })
   }
@@ -89,10 +83,10 @@ class Query extends Component {
       <div className="input-group">
         <input type="text" className="form-control" value={this.state.value} id="searchBar" onKeyUp={this.handleEnter} onChange={this.handleChange} placeholder="Find your favorite tracks..."/>
         <span className="input-group-btn">
-          <a className="btn btn-default" type="button" href="https://github.com/matthewtessler/spotify-af-explorer" target="_blank">
+          <a className="btn btn-default" type="button" href="https://github.com/matthewtessler/explore-spotify" target="_blank">
             <i className="fa fa-github fa-lg" aria-hidden="true"></i>
           </a>
-          <a className="btn btn-default" type="button" href="https://github.com/matthewtessler/spotify-af-explorer" target="_blank">
+          <a className="btn btn-default" type="button" href="https://developer.spotify.com/web-api/get-audio-features/" target="_blank">
             <i className="glyphicon glyphicon-question-sign" aria-hidden="true"></i>
           </a>
           <button className="btn btn-default" type="button" id="goBtn" onClick={this.handleClick}>Go!</button>
@@ -104,8 +98,55 @@ class Query extends Component {
 
 class Results extends Component {
   render() {
+    let tracksList = this.props.data.tracks.items;
+    let ids = [];
+    tracksList.forEach(function(ele) {
+      ids.push(ele.id);
+    });
+    let panelList = tracksList.map((currentValue, index, array) => {
+      return (
+        <div className = "col-lg-3">
+          <div className = "panel panel-default">
+            <div className = "panel-heading">
+              <div className = "row">
+                <div className = "col-lg-9">
+                  {currentValue.name + " "}
+                  <a href={currentValue.external_urls.spotify} target="_blank">
+                    <span className="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                  </a>
+                  <a href={currentValue.preview_url?currentValue.preview_url:""} target="_blank">
+                    <span className="glyphicon glyphicon-music" aria-hidden="true"></span>
+                  </a>
+                  <br/>
+                  {"Artist: " + currentValue.artists[0].name}
+                </div>
+                <div className = "col-lg-3">
+                  <img src={currentValue.album.images[0].url?currentValue.album.images[0].url:"./img/no_artwork.png"}></img>
+                </div>
+              </div>
+            </div>
+            <div className = "panel-body">
+
+            </div>
+          </div>
+        </div>
+      )
+    });
+
     return (
-      <div id="results"></div>
+      <div className = "container-fluid">
+        <div className="row">
+          {panelList}
+        </div>
+      </div>
+    )
+  }
+}
+
+class Artwork extends Component {
+  render() {
+    return (
+      <img src={this.props.url} />
     )
   }
 }
