@@ -11,7 +11,7 @@ class App extends Component {
       <div>
         <Top />
         <Key />
-        <div id="results"></div>
+        <div className = "container-fluid" id="results"></div>
       </div>
     )
   }
@@ -63,7 +63,19 @@ class Query extends Component {
         console.error(err);
       }
       else {
-        ReactDOM.render(<Results data={data}/>, document.querySelector('#results'));
+        const results = data;
+        let ids = [];
+        results.tracks.items.forEach(function(ele) {
+          ids.push(ele.id);
+        });
+        s.getAudioFeaturesForTracks(ids, function(err,data) {
+          if (err) {
+            console.error(err);
+          }
+          else {
+            ReactDOM.render(<Results data={results} audio_features={data}/>, document.querySelector('#results'));
+          }
+        });
       }
     })
   }
@@ -97,15 +109,56 @@ class Query extends Component {
 }
 
 class Results extends Component {
+  constructor(props) {
+    super(props);
+    let af_stats = this.props.audio_features;
+    let danceability = [];
+    let acousticness = [];
+    let energetic = [];
+    let instrumental = [];
+    let liveness = [];
+    let speechiness = [];
+    af_stats.audio_features.map((currentValue, index, array) => {
+      danceability.push({
+        width:(currentValue.danceability*100).toFixed(0) + "%",
+        backgroundColor:"#65F35B"
+      });
+      acousticness.push({
+        width:(currentValue.acousticness*100).toFixed(0) + "%",
+        backgroundColor:"#4222F2"
+      });
+      energetic.push({
+        width:(currentValue.energy*100).toFixed(0) + "%",
+        backgroundColor:"#CEF36D"
+      });
+      instrumental.push({
+        width:(currentValue.instrumentalness*100).toFixed(0) + "%",
+        backgroundColor:"#FB483B"
+      });
+      liveness.push({
+        width:(currentValue.liveness*100).toFixed(0) + "%",
+        backgroundColor:"#AC2F95"
+      });
+      speechiness.push({
+        width:(currentValue.speechiness*100).toFixed(0) + "%",
+        backgroundColor:"#F39A35"
+      });
+    });
+    this.state = {
+      danceability: danceability,
+      acousticness: acousticness,
+      energetic: energetic,
+      instrumental: instrumental,
+      liveness: liveness,
+      speechiness: speechiness
+    };
+  }
+
   render() {
     let tracksList = this.props.data.tracks.items;
-    let ids = [];
-    tracksList.forEach(function(ele) {
-      ids.push(ele.id);
-    });
     let panelList = tracksList.map((currentValue, index, array) => {
       return (
-        <div className = "col-lg-3">
+        <div className = "col-lg-3" key={currentValue.id}>
           <div className = "panel panel-default">
             <div className = "panel-heading">
               <div className = "row">
@@ -126,7 +179,36 @@ class Results extends Component {
               </div>
             </div>
             <div className = "panel-body">
-
+              <div className="progress" title="&#x1F483">
+                <div className='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style={this.state.danceability[index]}>
+                  {this.state.danceability[index].width + " " + String.fromCodePoint(0x1F483) }
+                </div>
+              </div>
+              <div className="progress" title="&#x1F399">
+                <div className='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style={this.state.acousticness[index]}>
+                  {this.state.acousticness[index].width + " " + String.fromCodePoint(0x1F399) }
+                </div>
+              </div>
+              <div className="progress" title="&#x26A1">
+                <div className='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style={this.state.energetic[index]}>
+                  {this.state.energetic[index].width + " " + String.fromCodePoint(0x26A1) }
+                </div>
+              </div>
+              <div className="progress" title="&#x1F3BA">
+                <div className='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style={this.state.instrumental[index]}>
+                  {this.state.instrumental[index].width + " " + String.fromCodePoint(0x1F3BA) }
+                </div>
+              </div>
+              <div className="progress" title="&#x1F3A4">
+                <div className='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style={this.state.liveness[index]}>
+                  {this.state.liveness[index].width + " " + String.fromCodePoint(0x1F3A4) }
+                </div>
+              </div>
+              <div className="progress" title="&#x1F4AC">
+                <div className='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style={this.state.speechiness}>
+                  {this.state.speechiness[index].width + " " + String.fromCodePoint(0x1F4AC) }
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -134,19 +216,9 @@ class Results extends Component {
     });
 
     return (
-      <div className = "container-fluid">
-        <div className="row">
-          {panelList}
-        </div>
+      <div className="row">
+        {panelList}
       </div>
-    )
-  }
-}
-
-class Artwork extends Component {
-  render() {
-    return (
-      <img src={this.props.url} />
     )
   }
 }
