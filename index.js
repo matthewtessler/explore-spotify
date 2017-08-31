@@ -160,10 +160,10 @@ class Results extends Component {
       return (
         <div className = "col-lg-3" key={currentValue.id}>
           <div className = "panel panel-default">
-            <div className = "panel-heading">
+            <div className = "panel-heading" title={currentValue.name}>
               <div className = "row">
                 <div className = "col-lg-9">
-                  {currentValue.name + " "}
+                  {currentValue.name.length > 20?currentValue.name.slice(0,17) + "...":currentValue.name}
                   <a href={currentValue.external_urls.spotify} target="_blank">
                     <span className="glyphicon glyphicon-new-window" aria-hidden="true"></span>
                   </a>
