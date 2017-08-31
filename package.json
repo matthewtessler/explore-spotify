@@ -6,10 +6,10 @@
     "node": "6.11.2"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config webpack.common.js",
     "start": "node ./bin/www",
     "dev": "npm run build && npm start",
-    "postinstall": "webpack"
+    "postinstall": "webpack --config webpack.prod.js"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -29,6 +29,8 @@
     "request": "^2.81.0",
     "serve-favicon": "~2.4.2",
     "spotify-web-api-js": "^0.22.0",
-    "webpack": "^3.5.5"
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "webpack": "^3.5.5",
+    "webpack-merge": "^4.1.0"
   }
 }
