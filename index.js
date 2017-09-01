@@ -73,7 +73,7 @@ class Query extends Component {
             console.error(err);
           }
           else {
-            ReactDOM.render(<h1></h1>, document.querySelector('#results'));
+            ReactDOM.render(<div></div>, document.querySelector('#results'));
             ReactDOM.render(<Results data={results} audio_features={data}/>, document.querySelector('#results'));
           }
         });
